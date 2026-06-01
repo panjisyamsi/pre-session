@@ -825,7 +825,7 @@ const CONTENT = {
         referralTitle: "Yang bisa kamu pertimbangkan:",
         referralInfo: "Psikolog klinis atau psikiater yang berlisensi. Hubungi biro psikologi yang kamu percaya dan merasa aman untuk memulai prosesnya.",
         divider: "atau, ingin berdiskusi dengan Panji?",
-        noteText: "Kamu tetap bisa menghubungi @panjisyamsi untuk berdiskusi. Panji akan mendampingi kamu berdiskusi dan berpikir yang bisa membantumu melihat situasi dari sudut yang berbeda.",
+        noteText: "Kamu tetap bisa menghubungi @panjisyamsi untuk berdiskusi. Panji bukan solusi — hanya teman berpikir yang bisa membantumu melihat situasi dari sudut yang berbeda.",
         ctaText: "Hubungi @panjisyamsi via WhatsApp",
         waMessage: "Halo, saya sudah mengisi assessment dan tetap ingin konsultasi dengan Kak Panji. Apakah saya boleh tahu teknis menjadwalkan sesinya? Terima kasih.",
       },
@@ -1185,7 +1185,7 @@ function computeResult() {
    GOOGLE SHEETS SUBMISSION
    ============================================================ */
 async function submitToSheets(resultType) {
-  if (APPS_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbw6GqB-hQIRJwcL1ruWOeVKbV-PSi7zCZIZFVPSTl3mvLAl4FQpcqmCWTIdLswR6ps/exec") return;
+  if (APPS_SCRIPT_URL === "YOUR_APPS_SCRIPT_URL_HERE") return;
 
   const C = CONTENT[state.lang];
   const questions = C.questions;
