@@ -825,7 +825,7 @@ const CONTENT = {
         referralTitle: "Yang bisa kamu pertimbangkan:",
         referralInfo: "Psikolog klinis atau psikiater yang berlisensi. Hubungi biro psikologi yang kamu percaya dan merasa aman untuk memulai prosesnya.",
         divider: "atau, ingin berdiskusi dengan Panji?",
-        noteText: "Kamu tetap bisa menghubungi @panjisyamsi untuk berdiskusi. Panji bukan solusi — hanya teman berpikir yang bisa membantumu melihat situasi dari sudut yang berbeda.",
+        noteText: "Kamu tetap bisa menghubungi @panjisyamsi untuk berdiskusi. Panji akan mendampingi dan menjadi teman berpikir yang bisa membantumu melihat situasi dari sudut yang berbeda.",
         ctaText: "Hubungi @panjisyamsi via WhatsApp",
         waMessage: "Halo, saya sudah mengisi assessment dan tetap ingin konsultasi dengan Kak Panji. Apakah saya boleh tahu teknis menjadwalkan sesinya? Terima kasih.",
       },
@@ -1190,7 +1190,7 @@ async function submitToSheets(resultType) {
   const C = CONTENT[state.lang];
   const questions = C.questions;
 
-  const payload = {
+  const params = {
     timestamp: new Date().toISOString(),
     language: state.lang,
     name: state.userData.name,
@@ -1198,21 +1198,25 @@ async function submitToSheets(resultType) {
     age: state.userData.age,
     status: state.userData.status,
     result: resultType,
-    hasSensitiveFlag: state.hasSensitiveFlag,
-    ...Object.fromEntries(
-      questions.map(q => [q.id, state.answers[q.id] ?? ""])
-    ),
+    hasSensitiveFlag: state.hasSensitiveFlag ? "YES" : "No",
   };
 
+  questions.forEach(function(q) {
+    params[q.id] = state.answers[q.id] !== undefined ? state.answers[q.id] : "";
+  });
+
+  const queryString = Object.entries(params)
+    .map(function(kv) { return encodeURIComponent(kv[0]) + "=" + encodeURIComponent(kv[1]); })
+    .join("&");
+
+  const url = APPS_SCRIPT_URL + "?" + queryString;
+
   try {
-    await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-      mode: "no-cors",
-    });
+    const img = new Image();
+    img.src = url;
+    fetch(url, { mode: "no-cors" }).catch(function() {});
   } catch (e) {
-    console.warn("Submission failed silently:", e);
+    console.warn("Submission error:", e);
   }
 }
 
